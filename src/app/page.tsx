@@ -1,21 +1,17 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { getProducts } from "@/lib/products";
 
-type Product = {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-  rating: { rate: number; count: number };
+export const metadata: Metadata = {
+  title: "Products",
+  description: "Browse the product catalog from the Fake Store API.",
 };
 
 export default async function Home() {
   "use cache";
 
-  const response = await fetch("https://fakestoreapi.com/products");
-  const products: Product[] = await response.json();
+  const products = await getProducts();
 
   return (
     <main className="mx-auto max-w-6xl px-6 py-12">
@@ -36,8 +32,9 @@ export default async function Home() {
 
       <section className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
         {products.map((product, index) => (
-          <article
+          <Link
             key={product.id}
+            href={`/products/${product.id}`}
             className="group flex flex-col overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-white/10 dark:bg-white/5"
           >
             <div className="relative flex aspect-square items-center justify-center overflow-hidden bg-linear-to-br from-black/5 to-black/0 p-6 dark:from-white/10 dark:to-white/0">
@@ -75,7 +72,7 @@ export default async function Home() {
                 </span>
               </div>
             </div>
-          </article>
+          </Link>
         ))}
       </section>
     </main>
