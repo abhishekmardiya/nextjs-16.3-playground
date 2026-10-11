@@ -14,6 +14,9 @@ const nextConfig: NextConfig = {
       fullUrl: true,
     },
   },
+  experimental: {
+    agentUpgrade: "latest",
+  },
 };
 
 export default nextConfig;
